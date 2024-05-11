@@ -9,10 +9,14 @@ import androidx.fragment.app.Fragment;
 
 import com.selective.reminder.R;
 
+import com.google.gson.*;
+
 public class search extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        JsonObject a = new JsonObject();
 
 
         return inflater.inflate(R.layout.fragment_search, container, false);
