@@ -1,6 +1,7 @@
 package com.selective.reminder.UI;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -22,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class login extends AppCompatActivity {
-    public static String mainurl = "http://localhost:8080/";
+    public static String mainurl = "http://172.27.64.145:8080";
     Button btn_login;
     EditText id;
     EditText pw;
@@ -30,9 +31,18 @@ public class login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        btn_login = findViewById(R.id.login_button);
+        id = (EditText) findViewById(R.id.input_id);
+        pw = (EditText) findViewById(R.id.input_pwd);
 
-
-        login(id, pw);
+        String uid = id.getText().toString().trim();
+        String upw = pw.getText().toString().trim();
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login(uid, upw);
+            }
+        });
     }
 
 
@@ -60,11 +70,13 @@ public class login extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        Toast.makeText(getApplicationContext(),"성공",Toast.LENGTH_SHORT).show();
                     }
                     },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(),"실패",Toast.LENGTH_SHORT).show();
                     }
                 }) {
             @Override
