@@ -1,5 +1,6 @@
 package com.selective.reminder.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -43,6 +44,10 @@ public class main_ui_activity extends AppCompatActivity {
                         .replace(R.id.main_frame, new search())
                         //.addToBackStack(null)
                         .commit();
+            }
+            else if(item.getItemId()==R.id.keyword){
+                Intent intent = new Intent(getApplicationContext(), KeywordVisualizeActivity.class);
+                startActivity(intent);
             }
             return true;
         });
