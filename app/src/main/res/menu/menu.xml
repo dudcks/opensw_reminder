@@ -7,6 +7,9 @@
         android:id="@+id/view"
         android:title="@string/view"/>
     <item
+        android:id="@+id/keyword"
+        android:title="keyword"/>
+    <item
         android:id="@+id/setting"
         android:title="@string/setting"/>
 </menu>
