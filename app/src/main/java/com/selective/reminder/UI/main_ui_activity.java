@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.selective.reminder.R;
 
@@ -48,5 +51,11 @@ public class main_ui_activity extends AppCompatActivity {
             }
             return true;
         });
+    }
+
+    public void init(){
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+
+        String url = login.mainurl+"/api/user";
     }
 }
