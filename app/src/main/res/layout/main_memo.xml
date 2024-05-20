@@ -15,15 +15,14 @@
             android:layout_height="80dp"
             android:layout_weight="5"
             android:layout_gravity="center_vertical"/>
-        <EditText
+        <TextView
             android:id="@+id/memo_time"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="5"
-            android:inputType="time"
             android:layout_gravity="center_horizontal"
             android:paddingTop="15dp"/>
-        <EditText
+        <TextView
             android:id="@+id/memo_edit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
