@@ -1,7 +1,11 @@
 package com.selective.reminder.UI;
 
+import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -13,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.selective.reminder.MainActivity;
 import com.selective.reminder.R;
 import com.android.volley.Request;
 
@@ -23,24 +28,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class login extends AppCompatActivity {
-    public static String mainurl = "http://172.27.64.145:8080";
+    public static String mainurl = "http://10.0.2.2:8080";
     Button btn_login;
     EditText id;
     EditText pw;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         btn_login = findViewById(R.id.login_button);
-        id = (EditText) findViewById(R.id.input_id);
-        pw = (EditText) findViewById(R.id.input_pwd);
-
-        String uid = id.getText().toString().trim();
-        String upw = pw.getText().toString().trim();
+        id = findViewById(R.id.input_id);
+        pw = findViewById(R.id.input_pwd);
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(uid, upw);
+                String uid = id.getText().toString();
+                String upw = pw.getText().toString();
+                //Toast.makeText(getApplicationContext(),"id:"+uid+"//"+"pwd:"+upw,Toast.LENGTH_SHORT).show();
+                login_(uid, upw);
             }
         });
     }
@@ -48,8 +54,8 @@ public class login extends AppCompatActivity {
 
 
 
-    protected void login(String id, String password) {
-        String url = mainurl + "/api/authenticate ";
+    protected void login_(String id, String password) {
+        String url = mainurl + "/api/authenticate";
 
         JSONObject jsonbody = new JSONObject();
         // {
@@ -66,13 +72,22 @@ public class login extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue (getApplicationContext());
 
+
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonbody,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Toast.makeText(getApplicationContext(),"성공",Toast.LENGTH_SHORT).show();
+                        try{
+                            String token = response.getString("token");
+                            startActivityString(MainActivity.class, "token", token);
+                            finish();
+                        } catch(JSONException e){
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "서버 응답 처리 중 오류 발생", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    },
+                },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -87,7 +102,51 @@ public class login extends AppCompatActivity {
             }
         };
         queue.add(request);
+    }
+    public void startActivityC(Class c) {
+        Intent intent = new Intent(getApplicationContext(), c);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+    }
+    public void startActivityflag(Class c) {
+        Intent intent = new Intent(getApplicationContext(), c);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+    }
+    public void startActivityString(Class c, String name , String sendString) {
+        Intent intent = new Intent(getApplicationContext(), c);
+        intent.putExtra(name, sendString);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+    }
+    public void startActivityNewTask(Class c){
+        Intent intent = new Intent(getApplicationContext(), c);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+    }
 
-
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        //Log.i("login_log", "이벤트 발생");
+        View focusView = getCurrentFocus();
+        if (focusView != null) {
+            //Log.i("login_log", "포커스가 있다면");
+            Rect rect = new Rect();
+            focusView.getGlobalVisibleRect(rect);
+            int x = (int) ev.getX(), y = (int) ev.getY();
+            if (!rect.contains(x, y)) {
+                // 터치위치가 태그위치에 속하지 않으면 키보드 내리기
+                //Log.i("login_log", "터치위치가 태그위치에 속하지 않으면 키보드 내리기");
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                if (imm != null)
+                    imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
+                focusView.clearFocus();
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }
+
+
