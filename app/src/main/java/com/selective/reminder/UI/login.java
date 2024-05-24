@@ -1,12 +1,15 @@
 package com.selective.reminder.UI;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -32,6 +35,11 @@ public class login extends AppCompatActivity {
     Button btn_login;
     EditText id;
     EditText pw;
+    SharedPreferences auto;
+    SharedPreferences.Editor autoLoginEdit;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +154,19 @@ public class login extends AppCompatActivity {
             }
         }
         return super.dispatchTouchEvent(ev);
+    }
+    public void autologin(){
+        CheckBox checkBox = findViewById(R.id.autologin);
+        if (checkBox.isChecked()) {
+            auto = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+            autoLoginEdit = auto.edit();
+            autoLoginEdit.putString("id", id.getText().toString());
+            autoLoginEdit.putString("pw", pw.getText().toString());
+            autoLoginEdit.commit();
+
+
+
+        }
     }
 }
 
