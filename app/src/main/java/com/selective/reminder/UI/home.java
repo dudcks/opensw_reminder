@@ -1,6 +1,7 @@
 package com.selective.reminder.UI;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.media.Image;
@@ -91,6 +92,7 @@ public class home extends Fragment {
         add_memo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(getContext(), input_memo.class);
                 //새 엑티비티에서 입력값 받아오기.
                 //로컬 저장소에 추가하기
                 memoItem newItem = new memoItem();
@@ -178,8 +180,8 @@ public class home extends Fragment {
 
         public class MemoViewHolder extends RecyclerView.ViewHolder {
             ImageView icon;
-            TextView memo_edit; //나중에 그냥 텍스트로
-            TextView memo_time; //나중에 그냥 텍스트로
+            TextView memo_edit;
+            TextView memo_time;
             CheckBox is_done;
 
 
