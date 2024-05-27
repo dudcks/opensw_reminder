@@ -4,24 +4,24 @@ import java.util.Date;
 
 public class memoItem {
     private int id;
-    private Long backid;
+    private int backid;
     private int icon_type;
     private String memo;
-    private String h;
-    private String m;
+    private int h;
+    private int m;
     private boolean is_do;
 
     public memoItem() {
         id=0;
-        backid = 0L;
+        backid = 0;
         icon_type=0;
         memo="";
-        h="00";
-        m="00";
+        h=14;
+        m=50;
         is_do=false;
     }
 
-    public memoItem(int id,Long backid, int icon_type, String memo, String h,String m, boolean is_do) {
+    public memoItem(int id,int backid, int icon_type, String memo, int h,int m, boolean is_do) {
         this.id = id;
         this.backid = backid;
         this.icon_type=icon_type;
@@ -34,7 +34,7 @@ public class memoItem {
     public void setId(int id) {
         this.id = id;
     }
-    public void setBackid(Long backid) {
+    public void setBackid(int backid) {
         this.backid = backid;
     }
 
@@ -45,10 +45,10 @@ public class memoItem {
     public void setMemo(String memo) {
         this.memo = memo;
     }
-    public void sethour(String h){
+    public void sethour(int h){
         this.h=h;
     }
-    public void setminute(String m){
+    public void setminute(int m){
         this.m=m;
     }
     public void setIs_do(boolean is_do) {
@@ -59,13 +59,13 @@ public class memoItem {
         return id;
     }
 
-    public Long getBackid() {
+    public int getBackid() {
         return backid;
     }
-    public String gethour() {
+    public int gethour() {
         return h;
     }
-    public String getminute() {
+    public int getminute() {
         return m;
     }
     public boolean getIs_do() {

@@ -1,6 +1,8 @@
 package com.selective.reminder.UI;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -80,7 +82,13 @@ public class login extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),"성공",Toast.LENGTH_SHORT).show();
                         try{
                             String token = response.getString("token");
-                            startActivityString(MainActivity.class, "token", token);
+                            SharedPreferences tokensp = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+                            SharedPreferences.Editor spEdit = tokensp.edit();
+                            spEdit.putString("token",token);
+                            spEdit.putString("id",id);
+                            spEdit.putString("pwd",password);
+                            spEdit.apply();
+                            startActivityC(MainActivity.class);
                             finish();
                         } catch(JSONException e){
                             e.printStackTrace();
@@ -105,24 +113,6 @@ public class login extends AppCompatActivity {
     }
     public void startActivityC(Class c) {
         Intent intent = new Intent(getApplicationContext(), c);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
-    }
-    public void startActivityflag(Class c) {
-        Intent intent = new Intent(getApplicationContext(), c);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
-    }
-    public void startActivityString(Class c, String name , String sendString) {
-        Intent intent = new Intent(getApplicationContext(), c);
-        intent.putExtra(name, sendString);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
-    }
-    public void startActivityNewTask(Class c){
-        Intent intent = new Intent(getApplicationContext(), c);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         overridePendingTransition(0, 0);
     }
