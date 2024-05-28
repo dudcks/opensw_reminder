@@ -216,6 +216,9 @@ public class home extends Fragment {
     private void sycn(){
         SharedPreferences memos = requireContext().getSharedPreferences("memo", Activity.MODE_PRIVATE);
         int ex = memos.getInt("Memo_num",-1);
+        SharedPreferences.Editor spEdit = memos.edit();
+        spEdit.putString("about_today",memo_text.getText().toString());
+        spEdit.apply();
 
         if(ex > -1){
             //메모가 존재하면 로컬메모를 원본으로 생각..
@@ -283,7 +286,6 @@ public class home extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast.makeText(getContext(),"성공",Toast.LENGTH_SHORT).show();
                         //SharedPreferences sp = requireContext().getSharedPreferences("memo", 0);
                         //SharedPreferences.Editor spEdit = sp.edit();
                         //spEdit.clear();
