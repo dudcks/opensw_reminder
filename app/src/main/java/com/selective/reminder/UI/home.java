@@ -1,11 +1,18 @@
 package com.selective.reminder.UI;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -39,6 +47,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.selective.reminder.MainActivity;
 import com.selective.reminder.R;
+import com.selective.reminder.Util.NotificationReceiver;
 import com.selective.reminder.Util.memoItem;
 
 import org.json.JSONArray;
@@ -64,6 +73,7 @@ public class home extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
         num=0;
 
 
@@ -73,7 +83,7 @@ public class home extends Fragment {
         reload = (Button) view.findViewById(R.id.reload);
 
         memoItems = new ArrayList<>();
-        memoAdapter = new MemoAdapter(memoItems);
+        memoAdapter = new MemoAdapter(getContext(),memoItems);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         memo_list.setLayoutManager(layoutManager);
@@ -150,8 +160,10 @@ public class home extends Fragment {
 
     public static class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder>{
         private List<memoItem> memoItems;
+        private Context context;
 
-        public MemoAdapter(List<memoItem> memoItems) {
+        public MemoAdapter(Context context,List<memoItem> memoItems) {
+            this.context = context;
             this.memoItems = memoItems;
         }
 
@@ -164,13 +176,35 @@ public class home extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull MemoViewHolder holder, int position) {
-            memoItem item = memoItems.get(position);
+            //memoItem item = memoItems.get(position);
+            int adapterPosition = holder.getAdapterPosition();
+
+            // 아이템이 여전히 유효한지 확인
+            if (adapterPosition != RecyclerView.NO_POSITION) {
+                memoItem item = memoItems.get(adapterPosition);
 
             holder.icon.setImageResource(R.drawable.test);
             holder.memo_edit.setText(item.getMemo());
             String time = String.valueOf(item.gethour()) +':'+ String.valueOf(item.getminute());
             holder.memo_time.setText(time);
             holder.is_done.setChecked(item.getIs_do());
+
+            Intent intent = new Intent(context, NotificationReceiver.class);
+            intent.putExtra("alarm_no", item.getId());
+            intent.putExtra("title", "알림");
+            intent.putExtra("message", item.getMemo());
+
+            int hour = item.gethour(); /* 시간 값 */; // 사용자가 입력한 시간 값
+            int minute = item.getminute();/* 분 값 */; // 사용자가 입력한 분 값
+
+            int totalMinutes = calc_minute(hour,minute);
+
+            Toast.makeText(context,totalMinutes+"분 후 알림",Toast.LENGTH_SHORT).show();
+            long triggerTime = System.currentTimeMillis() + (totalMinutes * 60 * 1000);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, item.getId(), intent, PendingIntent.FLAG_IMMUTABLE);
+
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
 
             holder.is_done.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 item.setIs_do(isChecked);
@@ -189,7 +223,58 @@ public class home extends Fragment {
                 }
                 spEdit.apply();
             });
+                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        showDeleteConfirmationDialog(adapterPosition);
+                        return true;
+                    }
+                });
+            }
 
+
+        }
+
+        private void showDeleteConfirmationDialog(final int position) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("메모 삭제")
+                    .setMessage("메모를 삭제하시겠습니까?")
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // 삭제 처리
+                            deleteMemo(position);
+                        }
+                    })
+                    .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // 취소 처리
+                            dialog.dismiss();
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+
+        private void deleteMemo(int position) {
+            memoItem item = memoItems.get(position);
+            //알림 삭제 하기....
+            Intent intent = new Intent(context, NotificationReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, item.getId(), intent, PendingIntent.FLAG_IMMUTABLE);
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            alarmManager.cancel(pendingIntent);
+
+            // 3. SharedPreferences에서 해당 메모 삭제 (필요한 경우)
+            SharedPreferences memos = context.getSharedPreferences("memo", Activity.MODE_PRIVATE);
+            SharedPreferences.Editor spEdit = memos.edit();
+            spEdit.remove("memo" + memoItems.get(position).getId());
+            spEdit.apply();
+
+            // 1. memoItems에서 해당 메모 삭제
+            memoItems.remove(position);
+
+            // 2. RecyclerView 업데이트
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, memoItems.size());
         }
 
         @Override
@@ -429,6 +514,22 @@ public class home extends Fragment {
         catch (JSONException e){
             throw new RuntimeException(e);
         }
+    }
+
+    public static int calc_minute(int hour, int minute){
+        Calendar calendar = Calendar.getInstance();
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int currentMinute = calendar.get(Calendar.MINUTE);
+
+        Log.e(null,hour + ":"+minute +", "+currentHour +":"+ currentMinute);
+
+// 알림 시간 계산
+        int targetHour =hour - currentHour;
+        int targetMinute = minute - currentMinute;
+
+        int totalMinutes = (targetHour*60) + targetMinute;
+
+        return totalMinutes;
     }
 
     @Override
