@@ -8,6 +8,8 @@ pluginManagement {
             }
         }
         mavenCentral()
+        // 키워드 시각화를 위한 리포지토리
+        maven { url = 'https://jitpack.io'}
         gradlePluginPortal()
     }
 }
@@ -16,6 +18,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // 키워드 시각화를 위한 리포지토리
+        maven { url = 'https://jitpack.io'}
     }
 }
 

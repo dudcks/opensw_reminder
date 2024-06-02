@@ -50,4 +50,7 @@ dependencies {
     implementation 'com.android.volley:volley:1.2.1'
     implementation "com.airbnb.android:lottie:6.0.0"
     implementation 'com.android.volley:volley:1.1.1'
+
+    // 키워드 시각화를 위한 라이브러리
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
