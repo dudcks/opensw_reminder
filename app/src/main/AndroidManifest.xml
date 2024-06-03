@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
@@ -19,6 +18,9 @@
         android:theme="@style/Theme.Reminder"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".UI.detail_memo"
+            android:exported="false" />
         <activity
             android:name=".UI.input_memo"
             android:exported="false" />
@@ -54,18 +56,18 @@
         </activity>
         <activity
             android:name=".UI.introActivity"
-            android:exported="true"> <!--여기 기존에 연결돼있던거 인트로로 바꾸기-->
+            android:exported="true"> <!-- 여기 기존에 연결돼있던거 인트로로 바꾸기 -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <receiver
             android:name=".Util.NotificationReceiver"
             android:enabled="true"
-            android:exported="false"
-            />
+            android:exported="false" />
     </application>
 
 </manifest>

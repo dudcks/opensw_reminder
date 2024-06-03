@@ -38,7 +38,7 @@ public class KeywordVisualizeActivity extends AppCompatActivity {
         pieChart = findViewById(R.id.piechart); // XML 레이아웃에 PieChart 추가 후 id 설정 필요
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8080/api/user/keyword";
+        String url = login.mainurl + "/api/user/keyword";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
             try {

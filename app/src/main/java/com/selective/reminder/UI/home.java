@@ -96,10 +96,8 @@ public class home extends Fragment {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         if (data != null) {
-                            //새 엑티비티에서 입력값 받아오기.
-                            //로컬 저장소에 추가하
                             String returnedString = data.getStringExtra("resultString");
-                            int icon_type = data.getIntExtra("icon_type", 0);
+                            int icon_type = data.getIntExtra("icon", 0);
                             String content = data.getStringExtra("memo_content");
                             int hour = data.getIntExtra("hour", 0);
                             int minute = data.getIntExtra("minute", 0);
@@ -115,7 +113,7 @@ public class home extends Fragment {
                             try {
                                 newmemo.put("id",num);
                                 newmemo.put("back_id",-1);
-                                newmemo.put("icon_type",icon_type);
+                                newmemo.put("icon",icon_type);
                                 newmemo.put("memo",newItem.getMemo());
                                 newmemo.put("is_do",newItem.getIs_do());
                                 newmemo.put("h",hour);
@@ -201,11 +199,13 @@ public class home extends Fragment {
 
             Toast.makeText(context,totalMinutes+"분 후 알림",Toast.LENGTH_SHORT).show();
             long triggerTime = System.currentTimeMillis() + (totalMinutes * 60 * 1000);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, item.getId(), intent, PendingIntent.FLAG_IMMUTABLE);
 
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+            if(totalMinutes>0) {
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, item.getId(), intent, PendingIntent.FLAG_IMMUTABLE);
 
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+            }
             holder.is_done.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 item.setIs_do(isChecked);
                 Toast.makeText(buttonView.getContext(),"눌림"+item.getId(),Toast.LENGTH_SHORT).show();
@@ -310,13 +310,12 @@ public class home extends Fragment {
             JSONObject root = make_json();
             //memo_text.setText(root.toString());
             upload(root);
-            //load_memo();//이거는 나중에 삭제해야함..
         }
         else {
             //upload가 아니라 load가 필요함..
             load_memo();
+            load_page();
         }
-        load_page();
     }
 
     private JSONObject make_json(){
@@ -349,6 +348,7 @@ public class home extends Fragment {
                             memoObject.put("_do",a.getBoolean("is_do"));
                             memoObject.put("alarm_hour", a.getInt("h"));
                             memoObject.put("alarm_minute", a.getInt("m"));
+                            memoObject.put("icon",a.getInt("icon"));
                             memoTexts.put(memoObject);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
@@ -411,6 +411,16 @@ public class home extends Fragment {
                         spEdit.clear();
                         spEdit.apply();
                         num=0;
+                        SharedPreferences memos = requireContext().getSharedPreferences("memo", Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor spEdit2 = memos.edit();
+                        try {
+                            String text=response.getString("feeling");
+                            spEdit2.putString("about_today",text);
+                            memo_text.setText(text);
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                        spEdit2.apply();
                         save_memo_res(response);
                     }
                 },
@@ -438,15 +448,15 @@ public class home extends Fragment {
         int n = memo.getInt("Memo_num",-1);
         if(n!=-1){
             num=n;
-            for(int i=0;i<n;i++){
-                String j =memo.getString("memo" + i, null);
-                if(j!=null){
+            for(int i=0;i<n;i++) {
+                String j = memo.getString("memo" + i, null);
+                if (j != null) {
                     try {
                         JSONObject a = new JSONObject(j);
                         memoItem newItem = new memoItem();
                         newItem.setId(a.getInt("id"));
                         newItem.setBackid(a.getInt("back_id"));
-                        newItem.setIcon_type(a.getInt("icon_type"));
+                        newItem.setIcon_type(a.getInt("icon"));
                         newItem.setMemo(a.getString("memo"));
                         newItem.sethour(a.getInt("h"));
                         newItem.setminute(a.getInt("m"));
@@ -459,6 +469,7 @@ public class home extends Fragment {
                     }
                 }
             }
+            memo_text.setText(memo.getString("about_today",null));
         }
     }
 
@@ -475,6 +486,7 @@ public class home extends Fragment {
                     String content = memoObject.getString("content");
                     int alarm_hour = memoObject.getInt("alarm_hour");
                     int alarm_minute = memoObject.getInt("alarm_minute");
+                    int icon_type = memoObject.getInt("icon");
 
                     memoItem newItem = new memoItem();
                     newItem.setId(num);
@@ -482,12 +494,13 @@ public class home extends Fragment {
                     newItem.setIs_do(is_do);
                     newItem.sethour(alarm_hour);
                     newItem.setminute(alarm_minute);
+                    newItem.setIcon_type(icon_type);
 
                     JSONObject newmemo = new JSONObject();
                     try {
                         newmemo.put("id",num);
                         newmemo.put("back_id",id);
-                        newmemo.put("icon_type",0);
+                        newmemo.put("icon",0);
                         newmemo.put("memo",content);
                         newmemo.put("is_do",is_do);
                         newmemo.put("h",alarm_hour);

@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class login extends AppCompatActivity {
-    public static String mainurl = "http://10.0.2.2:8080";
+    public static final String mainurl = "http://10.0.2.2:8080";
     Button btn_login;
     EditText id;
     EditText pw;
