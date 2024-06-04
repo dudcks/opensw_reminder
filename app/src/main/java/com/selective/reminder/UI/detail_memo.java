@@ -125,7 +125,7 @@ public class detail_memo extends AppCompatActivity {
             if (adapterPosition != RecyclerView.NO_POSITION) {
                 memoItem item = memoItems.get(adapterPosition);
 
-                holder.icon.setImageResource(R.drawable.test);
+                holder.icon.setImageResource(getIconResourceId(item.getIcon_type()));
                 holder.memo_edit.setText(item.getMemo());
                 String time = String.valueOf(item.gethour()) +':'+ String.valueOf(item.getminute());
                 holder.memo_time.setText(time);
@@ -133,6 +133,22 @@ public class detail_memo extends AppCompatActivity {
             }
         }
 
+        private int getIconResourceId(int iconType) {
+            switch (iconType) {
+                case 1:
+                    return R.drawable.type1;
+                case 2:
+                    return R.drawable.type2;
+                case 3:
+                    return R.drawable.type3;
+                case 4:
+                    return R.drawable.type4;
+                case 5:
+                    return R.drawable.type5;
+                default:
+                    return R.drawable.test; // 기본 아이콘 리소스 ID 반환
+            }
+        }
         @Override
         public int getItemCount() {
             return memoItems.size();
