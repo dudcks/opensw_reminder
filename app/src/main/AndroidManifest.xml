@@ -28,7 +28,7 @@
             android:name=".UI.signup"
             android:exported="false" />
         <activity
-            android:name=".UI.KeywordVisualizeActivity"
+            android:name=".UI.KeywordVisualize"
             android:exported="false" />
         <activity
             android:name=".UI.login"
