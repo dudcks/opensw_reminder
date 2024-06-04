@@ -46,8 +46,10 @@ public class main_ui_activity extends AppCompatActivity {
                         .commit();
             }
             else if(item.getItemId()==R.id.keyword){
-                Intent intent = new Intent(getApplicationContext(), KeywordVisualizeActivity.class);
-                startActivity(intent);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.main_frame, new KeywordVisualize())
+                        //.addToBackStack(null)
+                        .commit();
             }
             return true;
         });
