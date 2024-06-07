@@ -142,7 +142,7 @@ public class login extends AppCompatActivity {
                                     spEdit.putString("pwd",pw);
                                     spEdit.apply();
 
-                                    startActivityC(home.class);
+                                    startActivityC(main_ui_activity.class);
                                     overridePendingTransition(R.anim.alp_up,R.anim.none);
                                     finish();
 

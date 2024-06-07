@@ -142,29 +142,28 @@ public class MainActivity extends AppCompatActivity {
     /* 메인으로 이동 */
     private void goMain() {
         SharedPreferences skip = getSharedPreferences("skip_login", Activity.MODE_PRIVATE);
-        if (skip.getBoolean("skip", false)) {
-            startActivityC(com.selective.reminder.UI.home.class);
+        if (skip.getBoolean("skip", false)==true) {
+            startActivityC(com.selective.reminder.UI.main_ui_activity.class);
             overridePendingTransition(R.anim.alp_up, R.anim.none);
             finish();
         }
+        else {
+            SharedPreferences tokensp = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
 
+            String id = tokensp.getString("id", null);
+            String pwd = tokensp.getString("pwd", null);
+            if (id != null && pwd != null) {
+                login_(id, pwd);
+            } else {
+                SharedPreferences sp = getSharedPreferences("autoLogin", 0);
+                SharedPreferences.Editor spEdit = sp.edit();
+                spEdit.clear();
+                spEdit.apply();
 
-        SharedPreferences tokensp = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
-
-        String id = tokensp.getString("id",null);
-        String pwd = tokensp.getString("pwd",null);
-        if(id != null && pwd != null){
-            login_(id,pwd);
-        }
-        else{
-            SharedPreferences sp = getSharedPreferences("autoLogin", 0);
-            SharedPreferences.Editor spEdit = sp.edit();
-            spEdit.clear();
-            spEdit.apply();
-
-            Intent intent = new Intent(getApplicationContext(),com.selective.reminder.UI.login.class);
-            startActivity(intent);
-            finish();
+                Intent intent = new Intent(getApplicationContext(), com.selective.reminder.UI.login.class);
+                startActivity(intent);
+                finish();
+            }
         }
     }
 
@@ -208,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
                                     spEdit.putString("pwd", pw);
                                     spEdit.apply();
 
-                                    startActivityC(com.selective.reminder.UI.home.class);
+                                    startActivityC(com.selective.reminder.UI.main_ui_activity.class);
                                     overridePendingTransition(R.anim.alp_up, R.anim.none);
                                     finish();
 

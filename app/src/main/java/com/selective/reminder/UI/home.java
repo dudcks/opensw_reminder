@@ -76,6 +76,18 @@ public class home extends Fragment {
 
         num=0;
 
+        SharedPreferences day = requireContext().getSharedPreferences("day", Activity.MODE_PRIVATE);
+        Calendar calendar = Calendar.getInstance();
+        int c_y = calendar.get(Calendar.YEAR);
+        int c_m = calendar.get(Calendar.MONTH);
+        int c_d = calendar.get(Calendar.DATE);
+        if(day.getInt("year",-1)!=c_y||day.getInt("month",-1)!=c_m||day.getInt("day",-1)!=c_d){
+            SharedPreferences memo = requireContext().getSharedPreferences("memo", Activity.MODE_PRIVATE);
+            SharedPreferences.Editor spEdit = memo.edit();
+            spEdit.clear();
+            spEdit.apply();
+        }
+
         SharedPreferences memo = requireContext().getSharedPreferences("memo", Activity.MODE_PRIVATE);
         num = memo.getInt("Memo_num",0);
 
@@ -96,6 +108,17 @@ public class home extends Fragment {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
+                    SharedPreferences day = requireContext().getSharedPreferences("day", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor dayEdit = day.edit();
+                    Calendar calendar = Calendar.getInstance();
+                    int currenty = calendar.get(Calendar.YEAR);
+                    int currentm = calendar.get(Calendar.MONTH);
+                    int currentd = calendar.get(Calendar.DATE);
+                    dayEdit.putInt("year",currenty);
+                    dayEdit.putInt("month",currentm);
+                    dayEdit.putInt("day",currentd);
+                    dayEdit.apply();
+
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         if (data != null) {
@@ -139,8 +162,12 @@ public class home extends Fragment {
                 }
             });
 
+        SharedPreferences memos = requireContext().getSharedPreferences("memo", Activity.MODE_PRIVATE);
+        if(memos==null){
+            load_memo();
+            load_page();
+        }
         load_page();
-
         add_memo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -569,10 +596,20 @@ public class home extends Fragment {
     @Override
     public void onPause(){
         super.onPause();
+        init();
+    }
 
+    public void init(){
         SharedPreferences memos = requireContext().getSharedPreferences("memo", Activity.MODE_PRIVATE);
         SharedPreferences.Editor spEdit = memos.edit();
         spEdit.putString("about_today",memo_text.getText().toString());
         spEdit.apply();
+
+        int ex = memos.getInt("Memo_num",-1);
+
+        if(ex > -1){
+            JSONObject root = make_json();
+            upload(root);
+        }
     }
 }

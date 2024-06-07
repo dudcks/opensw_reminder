@@ -124,20 +124,28 @@ public class search extends Fragment {
                 viewHolder.maintext = convertView.findViewById(R.id.maintext);
                 viewHolder.daytext = convertView.findViewById(R.id.daytext);
                 convertView.setTag(viewHolder);
-                viewHolder.maintext.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int backId = item.getBackid();
-
-                        Intent intent = new Intent(getContext(), detail_memo.class);
-                        intent.putExtra("backId", backId);
-                        startActivity(intent);
-                    }
-                });
-
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
+
+// 아이템의 위치를 태그로 설정
+            viewHolder.maintext.setTag(position);
+            viewHolder.maintext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // 클릭된 뷰의 위치를 가져옴
+                    int position = (int) view.getTag();
+                    // 해당 위치의 아이템을 가져옴
+                    gridmemo clickedItem = memoList.get(position);
+                    // 클릭된 아이템의 backid를 가져옴
+                    int backId = clickedItem.getBackid();
+
+                    // 디테일 액티비티로 이동하는 인텐트 생성 및 실행
+                    Intent intent = new Intent(getContext(), detail_memo.class);
+                    intent.putExtra("backId", backId);
+                    startActivity(intent);
+                }
+            });
 
             viewHolder.maintext.setText(item.getMemo());
             viewHolder.daytext.setText(item.getDay());

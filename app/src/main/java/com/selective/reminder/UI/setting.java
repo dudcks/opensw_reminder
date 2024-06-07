@@ -32,8 +32,13 @@ public class setting extends Fragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences skip = requireContext().getSharedPreferences("skip_login", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor spEdit = skip.edit();
+                spEdit.clear();
+                spEdit.apply();
                 Intent intent = new Intent(requireContext(),com.selective.reminder.UI.login.class);
                 startActivity(intent,null);
+                getActivity().finish();
             }
         });
         logout.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +50,7 @@ public class setting extends Fragment {
                 spEdit.apply();
                 Intent intent = new Intent(requireContext(),com.selective.reminder.MainActivity.class);
                 startActivity(intent,null);
+                getActivity().finish();
             }
         });
 

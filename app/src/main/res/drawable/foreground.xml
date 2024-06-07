@@ -1,0 +1,9 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_launcher_foreground"/>
+    <item>
+        <bitmap
+            android:src="@drawable/main_icon"
+            android:gravity="center"
+            android:scaleType="fitCenter"/>
+    </item>
+</layer-list>
