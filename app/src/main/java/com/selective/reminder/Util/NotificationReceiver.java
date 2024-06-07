@@ -14,14 +14,22 @@ import com.selective.reminder.R;
 import com.selective.reminder.UI.introActivity;
 
 public class NotificationReceiver extends BroadcastReceiver {
+
     @Override
     public void onReceive(Context context, Intent intent) {
         int alarmNo = intent.getIntExtra("alarm_no", 1);     // 알람번호
         String title = intent.getStringExtra("title");                  // 제목
         String message = intent.getStringExtra("message");              // 메시지
 
+        if (title == null || title.isEmpty()) {
+            title = "기본 제목";  // 기본 제목 설정
+        }
+        if (message == null || message.isEmpty()) {
+            message = "기본 메시지";  // 기본 메시지 설정
+        }
+
         Intent appIntent = new Intent(context, introActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         PendingIntent pendingIntent = PendingIntent
                 .getActivity(context, alarmNo, appIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_ONE_SHOT);
@@ -33,7 +41,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         // 알림 Builder
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.ic_launcher_background)      // 상태바에 표시할 아이콘
+                .setSmallIcon(R.mipmap.ic_launcher)      // 상태바에 표시할 아이콘
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)
@@ -49,7 +57,6 @@ public class NotificationReceiver extends BroadcastReceiver {
             if (channel == null) {
                 // 기본 채널 생성 (IMPORTANCE_HIGH : 소리 + 팝업(헤드 업))
                 channel = new NotificationChannel(channelId, "channelName", NotificationManager.IMPORTANCE_HIGH);
-
                 notificationManager.createNotificationChannel(channel);
             }
         }

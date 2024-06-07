@@ -219,28 +219,29 @@ public class home extends Fragment {
             holder.memo_time.setText(time);
             holder.is_done.setChecked(item.getIs_do());
 
-            Intent intent = new Intent(context, NotificationReceiver.class);
-            intent.putExtra("alarm_no", item.getId());
-            intent.putExtra("title", "알림");
-            intent.putExtra("message", item.getMemo());
+                Intent intent = new Intent(context, NotificationReceiver.class);
+                intent.putExtra("alarm_no", item.getId());
+                intent.putExtra("title", "일정이 있어요!");
+                intent.putExtra("message", item.getMemo());
 
-            int hour = item.gethour(); /* 시간 값 */; // 사용자가 입력한 시간 값
-            int minute = item.getminute();/* 분 값 */; // 사용자가 입력한 분 값
+                int hour = item.gethour(); /* 시간 값 */; // 사용자가 입력한 시간 값
+                int minute = item.getminute(); /* 분 값 */; // 사용자가 입력한 분 값
 
-            int totalMinutes = calc_minute(hour,minute);
+                int totalMinutes = calc_minute(hour, minute);
 
-            //Toast.makeText(context,totalMinutes+"분 후 알림",Toast.LENGTH_SHORT).show();
-            long triggerTime = System.currentTimeMillis() + (totalMinutes * 60 * 1000);
+                long triggerTime = System.currentTimeMillis() + (totalMinutes * 60 * 1000);
 
-            if(totalMinutes>0) {
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, item.getId(), intent, PendingIntent.FLAG_IMMUTABLE);
-
-                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
-            }
+                if (totalMinutes > 0) {
+                    //Toast.makeText(context, item.getId() + "번 '" + item.getMemo() + "'의 일정 등록", Toast.LENGTH_SHORT).show();
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, item.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                    if (alarmManager != null) {
+                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+                    }
+                }
             holder.is_done.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 item.setIs_do(isChecked);
-                Toast.makeText(buttonView.getContext(),"눌림"+item.getId(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(buttonView.getContext(),"눌림"+item.getId(),Toast.LENGTH_SHORT).show();
                 SharedPreferences memos = buttonView.getContext().getSharedPreferences("memo", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor spEdit = memos.edit();
                 String a = memos.getString("memo"+item.getId(),null);
@@ -349,6 +350,8 @@ public class home extends Fragment {
             }
         }
     }
+
+
     private void sycn(){
         SharedPreferences memos = requireContext().getSharedPreferences("memo", Activity.MODE_PRIVATE);
         int ex = memos.getInt("Memo_num",-1);
