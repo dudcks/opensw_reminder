@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="90dp"
             app:menu="@menu/menu"
-            app:labelVisibilityMode="labeled"
+            app:labelVisibilityMode="unlabeled"
             />
 
     </LinearLayout>

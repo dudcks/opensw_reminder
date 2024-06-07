@@ -4,10 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -43,6 +49,15 @@ public class input_memo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_memo);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.parseColor("#EFEFEF")); // #EFEFEF 색상으로 변경
+
+            View decor = getWindow().getDecorView();
+            decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);// 어두운 텍스트 색상
+        }
 
         iconGridView = findViewById(R.id.icon_grid_view);
 
@@ -153,7 +168,7 @@ public class input_memo extends AppCompatActivity {
             // 선택된 아이콘 표시를 위한 로직
             if (position == mSelectedIconIndex) {
                 icon_type = mIconList.get(position);
-                imageView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.selected_icon_background)); // 선택된 아이콘 배경 색상 설정
+                imageView.setBackgroundResource(R.drawable.rounded_background); // 선택된 아이콘 배경 색상 설정
             } else {
                 imageView.setBackgroundColor(Color.TRANSPARENT); // 선택되지 않은 경우 배경을 투명하게 설정
             }
@@ -177,6 +192,23 @@ public class input_memo extends AppCompatActivity {
                     return R.drawable.test; // 기본 아이콘 리소스 ID 반환
             }
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        View focusView = getCurrentFocus();
+        if (focusView != null) {
+            Rect rect = new Rect();
+            focusView.getGlobalVisibleRect(rect);
+            int x = (int) ev.getX(), y = (int) ev.getY();
+            if (!rect.contains(x, y)) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                if (imm != null)
+                    imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
+                focusView.clearFocus();
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
 }

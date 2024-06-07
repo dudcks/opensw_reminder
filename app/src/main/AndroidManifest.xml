@@ -23,7 +23,8 @@
             android:exported="false" />
         <activity
             android:name=".UI.input_memo"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".UI.signup"
             android:exported="false" />
@@ -41,10 +42,12 @@
             android:exported="false" />
         <activity
             android:name=".UI.home"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".UI.main_ui_activity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

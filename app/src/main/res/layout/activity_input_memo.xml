@@ -5,33 +5,41 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/MainBackground"
     tools:context=".UI.input_memo">
 
-    <EditText
-        android:id="@+id/input_text"
-        android:layout_width="198dp"
-        android:layout_height="155dp"
-        android:layout_marginStart="204dp"
-        android:layout_marginTop="28dp"
-        android:hint="text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <TimePicker
         android:id="@+id/simple_timepicker"
-        android:layout_width="194dp"
-        android:layout_height="149dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="28dp"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
         android:format24Hour="true"
-        android:timePickerMode="spinner"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:timePickerMode="spinner" />
+
+    <EditText
+        android:id="@+id/input_text"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_weight="3"
+        android:background="@drawable/text_background"
+        android:layout_height="0dp"
+        android:hint="@string/input_memo_hint" />
 
     <GridView
         android:id="@+id/icon_grid_view"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_weight="5"
+        android:layout_height="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
         android:horizontalSpacing="8dp"
         android:numColumns="3"
         android:padding="8dp"
@@ -42,11 +50,20 @@
 
     <android.widget.Button
         android:id="@+id/save_btn"
+        android:layout_weight="1"
+        android:background="@drawable/btn_background"
+        android:text="@string/save"
+        android:layout_gravity="center"
         android:layout_width="210dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginBottom="32dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <View
+        android:layout_weight="0.5"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        />
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
