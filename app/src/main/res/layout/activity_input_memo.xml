@@ -7,38 +7,36 @@
     android:layout_height="match_parent"
     tools:context=".UI.input_memo">
 
+
+    <EditText
+        android:id="@+id/input_icon_type"
+        android:layout_width="351dp"
+        android:layout_height="226dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="336dp"
+        android:hint="icon type"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/input_text"
-        android:layout_width="198dp"
-        android:layout_height="155dp"
-        android:layout_marginStart="204dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="353dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="228dp"
         android:hint="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TimePicker
         android:id="@+id/simple_timepicker"
-        android:layout_width="194dp"
-        android:layout_height="149dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="28dp"
-        android:format24Hour="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="16dp"
         android:timePickerMode="spinner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <GridView
-        android:id="@+id/icon_grid_view"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:horizontalSpacing="8dp"
-        android:numColumns="3"
-        android:padding="8dp"
-        android:verticalSpacing="8dp"
-        app:layout_constraintBottom_toTopOf="@id/save_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <android.widget.Button
         android:id="@+id/save_btn"
@@ -48,5 +46,6 @@
         android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

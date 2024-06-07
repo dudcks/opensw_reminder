@@ -4,12 +4,8 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
-
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.*;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -22,27 +18,26 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.selective.reminder.R;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class KeywordVisualize extends Fragment {
+public class KeywordVisualizeActivity extends AppCompatActivity {
 
     private TextView textViewKeywords;
     private PieChart pieChart;
 
-    public KeywordVisualize() {
-        // Required empty public constructor
-    }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_keyword_visualize, container, false);
-        textViewKeywords = view.findViewById(R.id.textViewKeywords);
-        pieChart = view.findViewById(R.id.piechart);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_keyword_visualize);
+        textViewKeywords = findViewById(R.id.textViewKeywords);
+        pieChart = findViewById(R.id.piechart); // XML 레이아웃에 PieChart 추가 후 id 설정 필요
 
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        RequestQueue queue = Volley.newRequestQueue(this);
         String url = login.mainurl + "/api/user/keyword";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
@@ -91,7 +86,7 @@ public class KeywordVisualize extends Fragment {
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Content-Type", "application/json");
-                SharedPreferences tokensp = getActivity().getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+                SharedPreferences tokensp = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
                 String token = tokensp.getString("token", null);
                 headers.put("Authorization", "Bearer " + token);
                 return headers;
@@ -99,7 +94,5 @@ public class KeywordVisualize extends Fragment {
         };
 
         queue.add(jsonObjectRequest);
-
-        return view;
     }
 }

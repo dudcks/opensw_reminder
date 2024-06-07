@@ -76,9 +76,6 @@ public class home extends Fragment {
 
         num=0;
 
-        SharedPreferences memo = requireContext().getSharedPreferences("memo", Activity.MODE_PRIVATE);
-        num = memo.getInt("Memo_num",0);
-
 
         add_memo = (ImageButton) view.findViewById(R.id.add_memo);
         memo_list = (RecyclerView) view.findViewById(R.id.memo_list);
@@ -106,7 +103,7 @@ public class home extends Fragment {
                             int minute = data.getIntExtra("minute", 0);
                             memoItem newItem = new memoItem();
                             newItem.setId(num);
-                            newItem.setMemo(content);
+                            newItem.setMemo(content+num);
                             newItem.setIcon_type(icon_type);
                             newItem.sethour(hour);
                             newItem.setminute(minute);
@@ -183,7 +180,8 @@ public class home extends Fragment {
             // 아이템이 여전히 유효한지 확인
             if (adapterPosition != RecyclerView.NO_POSITION) {
                 memoItem item = memoItems.get(adapterPosition);
-                holder.icon.setImageResource(getIconResourceId(item.getIcon_type()));
+
+            holder.icon.setImageResource(R.drawable.test);
             holder.memo_edit.setText(item.getMemo());
             String time = String.valueOf(item.gethour()) +':'+ String.valueOf(item.getminute());
             holder.memo_time.setText(time);
@@ -199,7 +197,7 @@ public class home extends Fragment {
 
             int totalMinutes = calc_minute(hour,minute);
 
-            //Toast.makeText(context,totalMinutes+"분 후 알림",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,totalMinutes+"분 후 알림",Toast.LENGTH_SHORT).show();
             long triggerTime = System.currentTimeMillis() + (totalMinutes * 60 * 1000);
 
             if(totalMinutes>0) {
@@ -237,23 +235,6 @@ public class home extends Fragment {
 
         }
 
-        private int getIconResourceId(int iconType) {
-            switch (iconType) {
-                case 1:
-                    return R.drawable.type1;
-                case 2:
-                    return R.drawable.type2;
-                case 3:
-                    return R.drawable.type3;
-                case 4:
-                    return R.drawable.type4;
-                case 5:
-                    return R.drawable.type5;
-                default:
-                    return R.drawable.test; // 기본 아이콘 리소스 ID 반환
-            }
-        }
-
         private void showDeleteConfirmationDialog(final int position) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("메모 삭제")
@@ -286,8 +267,6 @@ public class home extends Fragment {
             SharedPreferences memos = context.getSharedPreferences("memo", Activity.MODE_PRIVATE);
             SharedPreferences.Editor spEdit = memos.edit();
             spEdit.remove("memo" + memoItems.get(position).getId());
-            num--;
-            spEdit.putInt("Memo_num",num);
             spEdit.apply();
 
             // 1. memoItems에서 해당 메모 삭제

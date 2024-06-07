@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +35,7 @@ public class login extends AppCompatActivity {
     Button btn_login;
     EditText id;
     EditText pw;
+    TextView regi_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class login extends AppCompatActivity {
         btn_login = findViewById(R.id.login_button);
         id = findViewById(R.id.input_id);
         pw = findViewById(R.id.input_pwd);
+        regi_btn = findViewById(R.id.regi_btn);
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,6 +52,14 @@ public class login extends AppCompatActivity {
                 String upw = pw.getText().toString();
                 //Toast.makeText(getApplicationContext(),"id:"+uid+"//"+"pwd:"+upw,Toast.LENGTH_SHORT).show();
                 login_(uid, upw);
+            }
+        });
+
+        regi_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(getApplicationContext(),signup.class);
+                startActivity(intent);
             }
         });
     }
