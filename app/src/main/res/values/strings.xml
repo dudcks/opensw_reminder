@@ -3,4 +3,12 @@
     <string name="home">home</string>
     <string name="setting">setting</string>
     <string name="view">view</string>
+    <string name="login_btn_text">로그인</string>
+    <string name="sing_up_text">회원가입</string>
+    <string name="app_text">Life\nJourney</string>
+    <string name="id_hint">\t아이디를 입력하세요.</string>
+    <string name="pwd_hint">\t비밀번호를 입력하세요.</string>
+    <string name="title_activity_main_home">MainHome</string>
+    <string name="로그아웃">로그아웃</string>
+    <string name="skip">건너뛰기</string>
 </resources>

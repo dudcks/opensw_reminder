@@ -41,7 +41,7 @@ public class introActivity extends AppCompatActivity {
                 checkAlarmPermission(0); // checkAlarmPermission(0)
             } else {
                 // 메인으로 이동
-                goMain(); // goMain();
+                finish();//goMain(); // goMain();
             }
         }
     }

@@ -7,36 +7,116 @@
     android:layout_height="match_parent"
     tools:context=".UI.login">
 
-    <TextView
-        android:layout_width="102dp"
-        android:layout_height="96dp"
-        android:layout_marginTop="120dp"
-        android:text="login_activity"
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.53"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/input_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/main_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.24"
+            android:fontFamily="sans-serif-smallcaps"
+            android:gravity="center"
+            android:text="@string/app_text"
+            android:textSize="70sp"
+            android:textStyle="bold"
+            android:visibility="visible" />
 
-    <EditText
-        android:id="@+id/input_pwd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_id" />
+        <EditText
+            android:id="@+id/input_id"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/text_background"
+            android:hint="@string/id_hint"
+            android:visibility="visible"/>
 
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="232dp"
-        android:text="Button"
+        <EditText
+            android:id="@+id/input_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
+            android:background="@drawable/text_background"
+            android:hint="@string/pwd_hint"
+            android:inputType="textPassword"
+            android:visibility="visible"/>
+
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/memo"/>
+
+        <android.widget.Button
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:background="@drawable/login_btn_background"
+            android:text="@string/login_btn_text"
+            android:textAllCaps="false"
+            android:textColor="@color/maintextcolor"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/sing_up_btn"
+            android:layout_width="90dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:text="@string/sing_up_text"
+            android:textAlignment="center"
+            android:textColor="@color/maintextcolor"
+            android:textSize="16sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/skip"
+            android:text="@string/skip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.32"
+            android:background="@color/alpha"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:gravity="right|bottom"
+            android:visibility="visible"/>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/cpb"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="104dp"
+        android:layout_height="101dp"
+        android:indeterminateDuration="@android:integer/config_longAnimTime"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

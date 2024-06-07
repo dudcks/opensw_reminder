@@ -5,6 +5,90 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/MainBackground"
     tools:context=".UI.signup">
+
+
+
+    <TextView
+        android:id="@+id/regi"
+        android:layout_width="316dp"
+        android:layout_height="99dp"
+        android:text="@string/sing_up_text"
+        android:textAlignment="center"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.109" />
+
+    <EditText
+        android:id="@+id/regi_username"
+        android:layout_width="344dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/text_background"
+        android:hint="@string/id_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/regi" />
+
+    <EditText
+        android:id="@+id/regi_password"
+        android:layout_width="345dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/text_background"
+        android:hint="@string/pwd_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@+id/regi_username" />
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.699"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/in" />
+
+    <android.widget.Button
+        android:id="@+id/btn_sumit"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="291dp"
+        android:layout_height="60dp"
+        android:background="@drawable/login_btn_background"
+        android:text="@string/sing_up_text"
+        android:textAlignment="center"
+        android:textColor="@color/maintextcolor"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="24sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.928" />
+
+
+    <ProgressBar
+        android:id="@+id/cpb1"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="104dp"
+        android:layout_height="101dp"
+        android:indeterminateDuration="@android:integer/config_longAnimTime"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

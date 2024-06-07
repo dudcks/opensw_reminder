@@ -57,17 +57,10 @@
         <activity
             android:name=".UI.introActivity"
             android:exported="true"> <!-- 여기 기존에 연결돼있던거 인트로로 바꾸기 -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-
         <receiver
             android:name=".Util.NotificationReceiver"
             android:enabled="true"
             android:exported="false" />
     </application>
-
 </manifest>

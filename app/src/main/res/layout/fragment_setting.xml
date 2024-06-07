@@ -7,13 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".UI.setting">
 
-    <TextView
-        android:layout_width="102dp"
-        android:layout_height="96dp"
-        android:layout_marginTop="120dp"
-        android:text="setting_fragment"
+    <android.widget.Button
+        android:visibility="gone"
+        android:background="@drawable/btn_background"
+        android:text="@string/login_btn_text"
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.53"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.widget.Button
+        android:visibility="gone"
+        android:background="@drawable/btn_background"
+        android:text="@string/로그아웃"
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

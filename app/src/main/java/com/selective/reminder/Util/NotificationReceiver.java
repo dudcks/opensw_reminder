@@ -20,7 +20,6 @@ public class NotificationReceiver extends BroadcastReceiver {
         String title = intent.getStringExtra("title");                  // 제목
         String message = intent.getStringExtra("message");              // 메시지
 
-        // 알림을 클릭하면 IntroActivity 호출
         Intent appIntent = new Intent(context, introActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
